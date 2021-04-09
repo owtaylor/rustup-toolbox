@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+        matrix:
+            include:
+                - fedora: 33
+                  latest: true
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+            podman build \
+                -t rustup-toolbox:${{ matrix.fedora }}  \
+                --build-arg=FEDORA_VERSION=${{ matrix.fedora }} .
+
+      - name: Push
+        if: ${{ github.ref == 'refs/heads/main' }}
+        env:
+          QUAY_TOKEN: ${{ secrets.QUAY_TOKEN }}
+          QUAY_USER: ${{ secrets.QUAY_USER }}
+        run: |
+          sh -c 'echo $QUAY_TOKEN' | sh -c 'podman login --password-stdin -u $QUAY_USER quay.io'
+          podman push rustup-toolbox:${{ matrix.fedora }} \
+              quay.io/owtaylor/rustup-toolbox:${{ matrix.fedora }}
+
+      - name: Push Latest
+        if: ${{ github.ref == 'refs/heads/main' && matrix.latest }}
+        run: |
+          podman push rustup-toolbox:${{ matrix.fedora }} \
+              quay.io/owtaylor/rustup-toolbox:latest
