@@ -8,6 +8,10 @@ Usage
 -----
 
 ``` bash
-toolbox create -c quay.io/owtaylor/rustup-toolbox:33 RS+F33
-toolbox enter RS+F33
+$ toolbox create -i quay.io/owtaylor/rustup-toolbox:33 RS_F33
+$ toolbox enter RS_F33
+# Workaround for https://github.com/containers/crun/issues/644
+⬢$ sudo chown -R $USER:$USER /rustup /cargo
+# Use rustup/cargo/...
+⬢$ rustup component add rls
 ```
