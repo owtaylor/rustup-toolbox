@@ -25,10 +25,11 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build
+        env:
+            FEDORA_VERSION: ${{ matrix.fedora }}
         run: |
-            podman build \
-                -t rustup-toolbox:${{ matrix.fedora }}  \
-                --build-arg=FEDORA_VERSION=${{ matrix.fedora }} .
+            ./build.sh
+            podman inspect rustup-toolbox:$FEDORA_VERSION | jq '.[0].Config.Labels'
 
       - name: Push
         if: ${{ github.ref == 'refs/heads/main' }}

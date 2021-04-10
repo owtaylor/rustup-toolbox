@@ -1,5 +1,17 @@
-ARG FEDORA_VERSION=33
+ARG FEDORA_VERSION
 FROM registry.fedoraproject.org/f$FEDORA_VERSION/fedora-toolbox:$FEDORA_VERSION
+
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL authoritative-source-url=quay.io \
+      build-date="$BUILD_DATE" \
+      maintainer="Owen Taylor <otaylor@fishsoup.net>" \
+      name=owtaylor/rustup-toolbox \
+      summary="Toolbox container based on Fedora with rustup" \
+      url="https://github.com/owtaylor/rustup-toolbox/" \
+      usage="This image is meant to be used with the toolbox command" \
+      vcs-ref="$VCS_REF" \
+      vcs-url="https://github.com/owtaylor/rustup-toolbox/"
 
 RUN dnf -y update && \
     dnf -y install gcc && \
