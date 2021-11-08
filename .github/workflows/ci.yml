@@ -20,7 +20,7 @@ jobs:
     strategy:
         matrix:
             include:
-                - fedora: 33
+                - fedora: 35
                   latest: true
 
     steps:

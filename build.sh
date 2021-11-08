@@ -2,7 +2,7 @@
 
 set -x
 
-FEDORA_VERSION=${FEDORA_VERSION:-33}
+FEDORA_VERSION=${FEDORA_VERSION:-35}
 podman build \
        -t rustup-toolbox:$FEDORA_VERSION  \
        --build-arg=FEDORA_VERSION=$FEDORA_VERSION \

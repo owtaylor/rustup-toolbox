@@ -1,5 +1,5 @@
 ARG FEDORA_VERSION
-FROM registry.fedoraproject.org/f$FEDORA_VERSION/fedora-toolbox:$FEDORA_VERSION
+FROM registry.fedoraproject.org/fedora-toolbox:$FEDORA_VERSION
 
 ARG BUILD_DATE
 ARG VCS_REF
